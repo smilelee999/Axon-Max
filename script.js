@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             let users = JSON.parse(localStorage.getItem("users")) || [];
-            let existingUser = users.find(user => user.email === email);
+            let existingUser = users.find(user => user.email.toLowerCase() === email.toLowerCase());
 
             if (existingUser) {
-                alert("An account with this email already exists.");
+                alert("An account with this email already exists. Try logging in.");
             } else {
-                users.push({ username, email, password });
+                users.push({ username, email: email.toLowerCase(), password });
                 localStorage.setItem("users", JSON.stringify(users));
                 alert("Account created successfully! You can now log in.");
                 window.location.href = "login.html";
@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             let users = JSON.parse(localStorage.getItem("users")) || [];
-            let validUser = users.find(user => user.email === email && user.password === password);
+            let validUser = users.find(user => user.email.toLowerCase() === email.toLowerCase() && user.password === password);
 
             if (validUser) {
-                localStorage.setItem("authToken", email); // Store email as session token
+                sessionStorage.setItem("authToken", email.toLowerCase()); // Use sessionStorage for cross-device login
                 alert("Login successful! Redirecting to your dashboard...");
                 window.location.href = "dashboard.html";
             } else {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
-            localStorage.removeItem("authToken");
+            sessionStorage.removeItem("authToken");
             alert("Logged out successfully!");
             window.location.href = "index.html";
         });
@@ -67,12 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Redirect to login if user is not authenticated
     if (window.location.pathname.includes("dashboard.html")) {
-        let authToken = localStorage.getItem("authToken");
+        let authToken = sessionStorage.getItem("authToken");
         if (!authToken) {
             alert("You must be logged in to access the dashboard.");
             window.location.href = "index.html";
         } else {
-            document.getElementById("userEmail").textContent = authToken; // Display logged-in email
+            document.getElementById("userEmail").textContent = authToken;
         }
     }
 });
