@@ -30,24 +30,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // LOGIN FUNCTION
-    document.getElementById("loginButton").addEventListener("click", function (event) {
-        event.preventDefault();
+document.getElementById("loginButton").addEventListener("click", function (event) {
+    event.preventDefault();
 
-        let email = document.getElementById("login-email").value;
-        let password = document.getElementById("login-password").value;
+    let email = document.getElementById("login-email").value;
+    let password = document.getElementById("login-password").value;
 
-        let users = JSON.parse(localStorage.getItem("users")) || [];
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-        let validUser = users.find(user => user.email === email && user.password === password);
+    let validUser = users.find(user => user.email === email && user.password === password);
 
-        if (validUser) {
-            localStorage.setItem("authToken", validUser.email); // Use email as session token
-            alert("Login successful! Redirecting to dashboard...");
-            window.location.href = "dashboard.html"; // Redirect to dashboard
-        } else {
-            alert("Invalid email or password. Please try again.");
-        }
-    });
+    if (validUser) {
+        localStorage.setItem("authToken", email); // Store session token
+        alert("Login successful! Redirecting to dashboard...");
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+    } else {
+        alert("Invalid email or password. Please try again.");
+    }
+});
+
 
     // LOGOUT FUNCTION
     if (document.getElementById("logoutButton")) {
