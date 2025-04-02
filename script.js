@@ -29,25 +29,31 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login.html"; // Redirect to login page
     });
 
-    // LOGIN FUNCTION
+   // LOGIN FUNCTION
 document.getElementById("loginButton").addEventListener("click", function (event) {
     event.preventDefault();
 
     let email = document.getElementById("login-email").value;
     let password = document.getElementById("login-password").value;
 
+    // Retrieve users data from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
+    // Find the user with matching email and password
     let validUser = users.find(user => user.email === email && user.password === password);
 
     if (validUser) {
-        localStorage.setItem("authToken", email); // Store session token
-        alert("Login successful! Redirecting to dashboard...");
-        window.location.href = "dashboard.html"; // Redirect to dashboard
+        // Store the session token to indicate user is logged in
+        localStorage.setItem("authToken", email); 
+        alert("Login successful! Redirecting to your dashboard...");
+        
+        // Redirect to dashboard
+        window.location.href = "dashboard.html"; 
     } else {
         alert("Invalid email or password. Please try again.");
     }
 });
+
 
 
     // LOGOUT FUNCTION
