@@ -48,29 +48,7 @@ document.getElementById("loginButton").addEventListener("click", function (event
         alert("Invalid email or password. Please try again.");
     }
 });
-document.getElementById("loginButton").addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent form submission
 
-    let email = document.getElementById("login-email").value;
-    let password = document.getElementById("login-password").value;
-
-    // Retrieve users data from localStorage
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Find the user with matching email and password
-    let validUser = users.find(user => user.email === email && user.password === password);
-
-    if (validUser) {
-        // Store the session token to indicate user is logged in
-        localStorage.setItem("authToken", email); 
-        alert("Login successful! Redirecting to your dashboard...");
-        
-        // Redirect to dashboard
-        window.location.href = "dashboard.html"; 
-    } else {
-        alert("Invalid email or password. Please try again.");
-    }
-});
 
 
 
