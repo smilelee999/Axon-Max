@@ -1,37 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // SIGNUP FUNCTION
-    document.getElementById("signupbotton").addEventListener("click", function (event) {
-        event.preventDefault(); // Prevent default button behavior
+   // SIGN UP FUNCTION (in script.js)
+document.getElementById("signupbotton").addEventListener("click", function (event) {
+    event.preventDefault();
 
-        let username = document.getElementById("username").value;
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
+    let username = document.getElementById("username").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
 
-        if (!username || !email || !password) {
-            alert("Please fill in all fields.");
-            return;
-        }
+    // Check if user already exists
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let existingUser = users.find(user => user.email === email);
 
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-
-        // Check if email already exists
-        let userExists = users.some(user => user.email === email);
-        if (userExists) {
-            alert("This email is already registered. Please log in.");
-            return;
-        }
-
-        // Save new user
+    if (existingUser) {
+        alert("An account with this email already exists.");
+    } else {
+        // Add the new user to the local storage
         users.push({ username, email, password });
         localStorage.setItem("users", JSON.stringify(users));
 
         alert("Account created successfully! You can now log in.");
-        window.location.href = "login.html"; // Redirect to login page
-    });
+        window.location.href = "login.html"; // Redirect to login page after sign-up
+    }
+});
+
 
    // LOGIN FUNCTION
 document.getElementById("loginButton").addEventListener("click", function (event) {
     event.preventDefault();
+
+    let email = document.getElementById("login-email").value;
+    let password = document.getElementById("login-password").value;
+
+    // Retrieve users data from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find the user with matching email and password
+    let validUser = users.find(user => user.email === email && user.password === password);
+
+    if (validUser) {
+        // Store the session token to indicate user is logged in
+        localStorage.setItem("authToken", email); 
+        alert("Login successful! Redirecting to your dashboard...");
+        
+        // Redirect to dashboard
+        window.location.href = "dashboard.html"; 
+    } else {
+        alert("Invalid email or password. Please try again.");
+    }
+});
+document.getElementById("loginButton").addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent form submission
 
     let email = document.getElementById("login-email").value;
     let password = document.getElementById("login-password").value;
